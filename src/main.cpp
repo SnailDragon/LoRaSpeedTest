@@ -49,6 +49,16 @@ void setup() {
     Serial.println("Receive failed with code, " + String(radio_state));
     while (1) delay(1000);
   }
+
+  // ui
+  display.clear();
+  display.setFont(ArialMT_Plain_10);
+  display.setTextAlignment(TEXT_ALIGN_LEFT);
+  display.drawString(0, 10, "It: 0 R: 0");
+  display.drawString(0, 22, "Rate: _ bps (B: _)");
+  display.drawString(0, 34, "Avg: _");
+  display.drawString(0, 46, "Packet: ");
+  display.display();
 }
 
 uint32_t it = 0;
@@ -87,21 +97,21 @@ void loop() {
           (average_bps * reading_count + packet_bps) / (reading_count + 1);
       reading_count++;
       bits_received = 0;
+
+      // ui
+      display.clear();
+      display.setFont(ArialMT_Plain_10);
+      display.setTextAlignment(TEXT_ALIGN_LEFT);
+      display.drawString(0, 10,
+                         "It: " + String(it) + " R: " + String(received_count));
+      display.drawString(
+          0, 22,
+          "Rate: " + String(packet_bps) + "bps (B: " + String(best_bps) + ")");
+      display.drawString(0, 34, "Avg: " + String(average_bps));
+      display.drawString(0, 46, "Packet: " + packet);
+      display.display();
     }
   }
-
-  // ui
-  display.clear();
-  display.setFont(ArialMT_Plain_10);
-  display.setTextAlignment(TEXT_ALIGN_LEFT);
-  display.drawString(0, 10,
-                     "It: " + String(it) + " R: " + String(received_count));
-  display.drawString(
-      0, 22,
-      "Rate: " + String(packet_bps) + "bps (B: " + String(best_bps) + ")");
-  display.drawString(0, 34, "Avg: " + String(average_bps));
-  display.drawString(0, 46, "Packet: " + packet);
-  display.display();
 
   it++;
 }
