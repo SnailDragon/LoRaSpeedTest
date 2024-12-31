@@ -89,7 +89,6 @@ void loop() {
   }
 
   if (millis() - last_calc > 1000) {
-    last_calc = millis();
     if (bits_received != 0) {
       packet_bps = bits_received;
       best_bps = max(packet_bps, best_bps);
@@ -111,6 +110,7 @@ void loop() {
       display.drawString(0, 46, "Packet: " + packet);
       display.display();
     }
+    last_calc = millis();
   }
 
   it++;
